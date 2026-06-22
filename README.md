@@ -56,6 +56,32 @@ cp src/config.yml.sample src/config.yml   # then fill in values
 python src/connector.py
 ```
 
+## Continuous Integration
+
+A GitHub Actions pipeline (`.github/workflows/ci.yml`) runs on every push/PR
+(and the uptime check additionally on a 6-hour cron):
+
+| Job | Tool | Purpose |
+|-----|------|---------|
+| `secret-scan` | [gitleaks](https://github.com/gitleaks/gitleaks) (`.gitleaks.toml`) | Fails the build if an API key, token, or non-placeholder OpenCTI endpoint is committed |
+| `lint` | [ruff](https://docs.astral.sh/ruff/) (`ruff.toml`) | `ruff check` + `ruff format --check` |
+| `docker-build-test` | `docker build` + `pytest` | Builds the image, smoke-tests that the connector boots without import/syntax errors, and runs unit tests on the STIX conversion |
+| `endpoint-health` | `curl` | **Non-blocking** probe of the opensourcemalware API (a 3rd-party outage won't fail your pipeline) |
+
+Run the checks locally:
+
+```bash
+pip install ruff pytest -r requirements.txt
+ruff check . && ruff format --check .
+pytest -q
+```
+
+> **Security:** real tokens/endpoints must never be committed. `docker-compose.yml`
+> ships with `ChangeMe` placeholders; supply real values via your shell
+> environment or an un-tracked `.env` / `src/config.yml` (both are git-ignored).
+> If a secret is ever pushed, **rotate it** — removing it from the current file
+> does not purge it from git history.
+
 ## Notes
 
 - The free `query-latest` endpoint returns up to the 100 most recent threats per

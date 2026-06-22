@@ -1,5 +1,5 @@
 import stix2
-from pycti import Identity, Malware, MarkingDefinition, StixCoreRelationship
+from pycti import Identity, Malware
 
 # Map the source's severity_level to OpenCTI score buckets (0-100).
 _SEVERITY_SCORE = {
@@ -82,7 +82,13 @@ class ThreatConverter:
         if threat.get("payload_description"):
             parts.append(f"**Payload:** {threat['payload_description']}")
         meta = []
-        for key in ("registry", "severity_level", "status", "verified_by", "verified_at"):
+        for key in (
+            "registry",
+            "severity_level",
+            "status",
+            "verified_by",
+            "verified_at",
+        ):
             if threat.get(key):
                 meta.append(f"- {key}: {threat[key]}")
         if meta:

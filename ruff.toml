@@ -1,0 +1,14 @@
+target-version = "py312"
+line-length = 88
+
+[lint]
+# pyflakes (F), pycodestyle (E/W), isort (I), pyupgrade (UP), bugbear (B),
+# flake8-comprehensions (C4). The codebase already uses `# noqa: BLE001`,
+# so blind-except (BLE) is enabled too.
+select = ["E", "W", "F", "I", "UP", "B", "C4", "BLE"]
+ignore = [
+  "E501",  # line length is handled by the formatter, not the linter
+]
+
+[lint.per-file-ignores]
+"tests/*" = ["B", "BLE"]

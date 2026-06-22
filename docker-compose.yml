@@ -4,10 +4,10 @@ services:
     build: .
     environment:
       # OpenCTI
-      - OPENCTI_URL=https://opencti.eksdev.getonecard.app/
-      - OPENCTI_TOKEN=flgrn_octi_tkn_IZvJ7wKJCrzZEacE5mw_AIkOCDasxVBg2zKJh0rTOaQuIByKFyFHMUQiYRJradlh
+      - OPENCTI_URL=https://your-opencti-instance.example.com/
+      - OPENCTI_TOKEN=ChangeMe
       # Connector
-      - CONNECTOR_ID="OSM"
+      - CONNECTOR_ID=ChangeMe   # a fresh UUIDv4, e.g. `uuidgen`
       - CONNECTOR_TYPE=EXTERNAL_IMPORT
       - CONNECTOR_NAME=Open Source Malware
       - CONNECTOR_SCOPE=malware
@@ -15,7 +15,7 @@ services:
       - CONNECTOR_DURATION_PERIOD=PT6H
       # opensourcemalware.com
       - OPENSOURCEMALWARE_API_BASE_URL=https://api.opensourcemalware.com/functions/v1
-      - OPENSOURCEMALWARE_API_TOKEN=osm_wFU2mgWYbTMJrHsqAn6pFa7H2SM38TCGUl7yg0OD
+      - OPENSOURCEMALWARE_API_TOKEN=ChangeMe
       - OPENSOURCEMALWARE_ECOSYSTEMS=npm,pypi
       - OPENSOURCEMALWARE_LABEL=opensourcemalware
       - OPENSOURCEMALWARE_VERIFIED_ONLY=true

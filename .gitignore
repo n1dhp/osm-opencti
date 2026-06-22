@@ -1,0 +1,14 @@
+# Secrets / local config — never commit real tokens or endpoints
+src/config.yml
+.env
+*.env
+.api-token
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/

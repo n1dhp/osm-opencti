@@ -1,5 +1,5 @@
 import sys
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 import stix2
 from pycti import OpenCTIConnectorHelper
@@ -34,13 +34,11 @@ class OpenSourceMalwareConnector:
             for threat in threats:
                 if self.config.verified_only and threat.get("status") != "verified":
                     continue
-                stix_objects.extend(
-                    self.converter.threat_to_stix(threat, ecosystem)
-                )
+                stix_objects.extend(self.converter.threat_to_stix(threat, ecosystem))
         return stix_objects
 
     def process_message(self):
-        now = datetime.now(tz=timezone.utc)
+        now = datetime.now(tz=UTC)
         friendly_name = f"Open Source Malware run @ {now.isoformat()}"
         work_id = self.helper.api.work.initiate_work(
             self.helper.connect_id, friendly_name
@@ -65,9 +63,7 @@ class OpenSourceMalwareConnector:
                 f"Imported {len(stix_objects) - 1} malicious packages",
             )
         except Exception as err:  # noqa: BLE001
-            self.helper.connector_logger.error(
-                "Error during run", {"error": str(err)}
-            )
+            self.helper.connector_logger.error("Error during run", {"error": str(err)})
             self.helper.api.work.to_processed(work_id, str(err), in_error=True)
 
     def run(self):

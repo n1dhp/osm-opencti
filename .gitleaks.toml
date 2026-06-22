@@ -1,0 +1,36 @@
+# Gitleaks config — extends the default ruleset with project-specific patterns.
+# Catches the token shapes and live endpoints this repo must never ship.
+title = "osm-opencti gitleaks config"
+
+[extend]
+useDefault = true
+
+[[rules]]
+id = "opencti-token"
+description = "OpenCTI connector token"
+regex = '''flgrn_octi_tkn_[A-Za-z0-9_]{20,}'''
+tags = ["opencti", "token"]
+
+[[rules]]
+id = "opensourcemalware-token"
+description = "opensourcemalware.com API token"
+regex = '''osm_[A-Za-z0-9]{30,}'''
+tags = ["opensourcemalware", "token"]
+
+[[rules]]
+id = "private-opencti-endpoint"
+description = "Non-placeholder OpenCTI endpoint leaking internal infrastructure"
+# Flags real hostnames while allowing example/placeholder ones.
+regex = '''OPENCTI_URL\s*=\s*https?://(?!(localhost|127\.0\.0\.1|your-opencti-instance\.example\.com))[A-Za-z0-9.-]+'''
+tags = ["endpoint", "infrastructure"]
+
+[allowlist]
+description = "Placeholders and sample files are allowed"
+regexes = [
+  '''ChangeMe''',
+  '''your-opencti-instance\.example\.com''',
+]
+paths = [
+  '''src/config\.yml\.sample''',
+  '''\.gitleaks\.toml''',
+]
