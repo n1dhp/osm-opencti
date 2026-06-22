@@ -6,6 +6,16 @@ latest verified malicious packages from
 **Malware** object, tags it with a configurable **label**, and imports it into
 OpenCTI.
 
+## Architecture
+
+![OSM → STIX → OpenCTI ingestion pipeline](docs/architecture.svg)
+
+The connector runs on a schedule (`schedule_iso`, every `PT6H` by default):
+fetch the latest threats per ecosystem from opensourcemalware.com, keep only
+`verified` records, convert each to a STIX 2.1 `Malware` object, and import the
+bundle into OpenCTI (which upserts by deterministic STIX id). Downstream fan-out
+to subscribers such as Vector by Datadog is not yet implemented.
+
 ## What it does
 
 - Calls the free `query-latest` API for each configured ecosystem (`npm`, `pypi`, …).
