@@ -1,4 +1,4 @@
-# OpenCTI — Open Source Malware Connector
+# osm-opencti — Open Source Malware Connector for OpenCTI
 
 An [OpenCTI](https://www.opencti.io) `EXTERNAL_IMPORT` connector that pulls the
 latest verified malicious packages from
